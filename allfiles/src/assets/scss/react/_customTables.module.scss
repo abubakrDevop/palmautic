@@ -1,0 +1,148 @@
+.header {
+    min-height: 100vh;
+    padding: 20px 0px;
+
+    .headTitle {
+        margin: 0px 0px 20px 35px;
+        color: #111827;
+    }
+
+    .main {
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+
+        .div {
+            width: 50%;
+            height: 100vh;
+            border: solid 1px black;
+            &:nth-child(1) {
+                width: 120%;
+            }
+
+            .section {
+                padding: 20px 35px;
+                display: flex;
+                justify-content: space-between;
+
+                .label {
+                    width: 150px;
+                    height: 40px;
+                    border-radius: 20px;
+                    background: linear-gradient(to right, rgb(0, 174, 255), rgb(0, 67, 252));
+                    color: white;
+                    box-shadow: 2px 2px 5px blue;
+                    font-size: 14px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    &:active {
+                        box-shadow: 0px 0px 0px blue;
+                    }
+
+                    .file {
+                        width: 0;
+                        height: 0;
+                    }
+                }
+
+                .searchBox {
+                    width: 525px;
+                    height: 40px;
+                    border: solid 2px rgba(0, 0, 0, 0.5);
+                    border-radius: 20px;
+                    padding: 0px 15px 0px 0px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    overflow: hidden;
+
+                    .search {
+                        width: 105%;
+                        height: 100%;
+                        border: none;
+                        padding: 0px 15px;
+                        &::placeholder {
+                            font-size: 14px;
+                        }
+                    }
+
+                    .icon {
+                        font-size: 20px;
+                    }
+                }
+            }
+
+            .headTitles {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px 35px;
+
+                .headTitles_text {
+                    position: relative;
+                    font-size: 14px;
+                    &:nth-child(3) {
+                        left: 30px;
+                    }
+                }
+            }
+
+            .contactInner {
+                padding: 10px 35px;
+                display: flex;
+                justify-content: space-around;
+            }
+        }
+
+        .addInputs {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .errors {
+                position: relative;
+                top: 25px;
+                left: 25px;
+                height: 10px;
+                color: red;
+                font-size: 12px;
+                align-self: flex-start;
+            }
+
+            .headTitle {
+                margin: 25px 5px 0px 0px;
+                font-size: 23px;
+            }
+
+            .input {
+                position: relative;
+                top: 11px;
+                width: 85%;
+                height: 40px;
+                border-radius: 20px;
+                border: solid 1px rgba(0, 0, 0, 0.3);
+                margin-top: 20px;
+                padding: 0px 15px;
+                &::placeholder {
+                    font-size: 14px;
+                }
+            }
+
+            .button {
+                width: 85%;
+                height: 40px;
+                border-radius: 20px;
+                background: linear-gradient(to right, rgb(0, 174, 255), rgb(0, 67, 252));
+                color: white;
+                box-shadow: 2px 2px 5px blue;
+                font-size: 14px;
+                align-self: flex-start;
+                margin: 32px 0px 0px 25px;
+                border: none;
+                &:active {
+                    box-shadow: 0px 0px 0px blue;
+                }
+            }
+        }
+    }
+}
