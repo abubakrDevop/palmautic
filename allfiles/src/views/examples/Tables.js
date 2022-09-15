@@ -28,7 +28,9 @@ const Tables = () => {
     },
   ])
   const [active, setActive] = React.useState(false)
+  const [name, setName] = React.useState('')
   const [idNum, setId] = React.useState(null)
+  const [json, setJson] = React.useState()
 
   const handleActive = () => {
     setActive(prev => !prev)
@@ -36,6 +38,7 @@ const Tables = () => {
 
   const {
     formState,
+    reset,
     register,
     handleSubmit
   } = useForm()
@@ -76,7 +79,7 @@ const Tables = () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        id: idNum,
+        id: idNum !== null ? idNum : id,
         phone: data.number,
         email: data.email,
         name: data.name,
@@ -109,6 +112,7 @@ const Tables = () => {
     .then(response => response.json())
     .then(json => {
       setData(json.result)
+      setJson(json.result)
     })
     .then(seatch => {
     })
@@ -120,12 +124,16 @@ const Tables = () => {
       return name.toLowerCase().includes(value)
     })
     setData(newData)
-    value === '' ? window.location.reload() : setData(newData)
+    value === '' ? setData(json) : console.log()
+  }
+
+  const handleClean = () => {
+    setId(null)
+    reset()
   }
 
   return (
     <>
-      <Header />
       <header className={cls.header}>
         <h1 className={cls.headTitle}>Контакты</h1>
         <main className={cls.main}>
@@ -162,11 +170,14 @@ const Tables = () => {
                     <div 
                       key={item.id} 
                       data-id={item.id}
-                      className={`${cls.contact} ${active && cls.active}`}
-                      onClick={() => setId(item.id)}
+                      className={`${cls.contact} ${idNum !== null && cls.active}`}
+                      onClick={() => {
+                        setId(item.id)
+                        setName(item.name)
+                      }}
                     >
                       <input type="checkbox" className={cls.checkbox} onClick={handleActive} />
-                      <p className={cls.contactInfo}> { item.name } </p>
+                      <p className={cls.contactInfo} onClick={() => setName(item.name)}> { item.name } </p>
                       <p className={cls.contactInfo}> { item.email } </p>
                       <p className={cls.contactInfo}> { item.phone } </p>
                       <p className={cls.contactInfo}> { item.company } </p>
@@ -179,8 +190,10 @@ const Tables = () => {
               }
             </section>
           </div>
+          <div className={cls.addInputsHead}>
           <form onSubmit={handleSubmit(onSubmit)} className={`${cls.addInputs} ${cls.div}`}>
             <h1 className={cls.headTitle}>{idNum === null ? 'Добавить контакт' : 'Изменить контакт' }</h1>
+            <span className={cls.title}>{idNum === null ? null : name}</span>
 
             {
               formState.errors.name && <span className={cls.errors}> {formState.errors.name.message} </span>
@@ -237,8 +250,10 @@ const Tables = () => {
               {...register('company', Form.Options.allInputs)}
             />
 
-            <button className={cls.button} type="submit">Добавить</button>
+            <button className={cls.button} type="submit">{idNum === null ? 'Добавить' : 'Сохранить'}</button>
+            <span onClick={handleClean} className={cls.button_clean} >{idNum === null ? 'Очистить' : 'Отменить изменение'}</span>
           </form>
+          </div>
         </main>
       </header>
     </>

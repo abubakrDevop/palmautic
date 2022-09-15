@@ -1,6 +1,6 @@
 .header {
     min-height: 100vh;
-    padding: 20px 0px;
+    padding: 15px 0px;
 
     .headTitle {
         margin: 0px 0px 20px 35px;
@@ -17,11 +17,10 @@
             min-height: 100vh;
             &:nth-child(1) {
                 width: 120%;
-                border-right: solid 1px rgba(0, 0, 0, 0.3);
             }
 
             .section {
-                padding: 20px 35px;
+                padding: 0px 35px;
                 display: flex;
                 justify-content: space-between;
 
@@ -56,6 +55,7 @@
                     justify-content: space-between;
                     align-items: center;
                     overflow: hidden;
+                    z-index: 2;
 
                     .search {
                         width: 105%;
@@ -74,6 +74,7 @@
             }
 
             .headTitles {
+                margin-top: 10px;
                 display: flex;
                 justify-content: space-between;
                 padding: 10px 35px;
@@ -104,26 +105,29 @@
             }
 
             .contactInner {
-                padding: 0px 0px 0px 10px;
+                padding: 0px 0px 0px 0px;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-around;
 
                 .active {
-                    opacity: 1;
+                    // background: #111827;
                 }
 
                 .contact {
                     position: relative;
+                    padding: 0px 0px 0px 10px;
                     top: -10px;
                     width: 100%;
                     height: 60px;
                     border-bottom: solid 1px rgba(0, 0, 0, 0.336);
+                    border-right: solid 1px rgba(0, 0, 0, 0.336);
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
                     transition: .3s ease-in-out;
                     text-align: left;
+                    z-index: 2;
                     cursor: pointer;
                     &:nth-child(1) {
                         border-top: solid 1px rgba(0, 0, 0, 0.336);
@@ -163,7 +167,19 @@
             }
         }
 
+        .addInputsHead {
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         .addInputs {
+            position: fixed;
+            top: 55px;
+            left: 380px;
+            width: 200px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -171,11 +187,11 @@
             .errors {
                 position: relative;
                 top: 25px;
-                left: 25px;
+                left: -50px;
                 height: 10px;
                 color: red;
                 font-size: 12px;
-                align-self: flex-start;
+                // align-self: flex-start;
             }
 
             .headTitle {
@@ -186,7 +202,7 @@
             .input {
                 position: relative;
                 top: 11px;
-                width: 85%;
+                width: 18%;
                 height: 40px;
                 border-radius: 20px;
                 border: solid 1px rgba(0, 0, 0, 0.3);
@@ -197,20 +213,28 @@
                 }
             }
 
-            .button {
-                width: 85%;
+            .button,
+            .button_clean {
+                width: 18%;
                 height: 40px;
                 border-radius: 20px;
                 background: linear-gradient(to right, rgb(0, 174, 255), rgb(0, 67, 252));
                 color: white;
                 box-shadow: 2px 2px 5px blue;
                 font-size: 14px;
-                align-self: flex-start;
-                margin: 32px 0px 0px 25px;
+                margin: 32px 0px 0px 0px;
                 border: none;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
                 &:active {
                     box-shadow: 0px 0px 0px blue;
                 }
+            }
+
+            .button_clean {
+                margin: 10px 0px 0px 0px;
             }
         }
     }
