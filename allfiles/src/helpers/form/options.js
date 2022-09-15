@@ -1,12 +1,12 @@
-import { emailReg, passwordReg } from "./regex"
+import { emailReg } from "./regex"
 
-export const required = 'Field cannot be empty!'
+export const required = 'Это поле не может быть пустым!'
 
 export const email = {
     required,
     pattern: {
         value: emailReg,
-        message: 'Email is not valid!'
+        message: 'Email не валиден!'
     }
 }
 
@@ -17,6 +17,6 @@ export const allInputs = {
     },
     minLength: {
         value: 5,
-        message: 'Password must contain at least 5 letters!'
+        message: 'Должен содержать не менее 5 букв!'
     }
 }

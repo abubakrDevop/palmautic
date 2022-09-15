@@ -3,8 +3,36 @@ import cls from '../../assets/scss/react/_customTables.module.scss'
 import { IoIosSearch } from 'react-icons/io'
 import { useForm } from "react-hook-form";
 import { Form } from "../../helpers/form"
+import React, { useEffect } from "react";
+// import { postContact, searchGet } from '../../helpers/form/restApi'
 
 const Tables = () => {
+  const [data, setData] = React.useState([
+    {
+      id: 1,
+      accountId: 1001,
+      name: 'Viola Price',
+      phone: "(815) 823-6532",
+      email: "tobu@oheaseki.gf",
+      company: "Baker Hughes Incorporated",
+      linkedin: "hecgi"
+    },
+    {
+      id: 2,
+      accountId: 1001,
+      name: 'Viola Price',
+      phone: "(815) 823-6532",
+      email: "tobu@oheaseki.gf",
+      company: "Baker Hughes Incorporated",
+      linkedin: "hecgi"
+    },
+  ])
+  const [active, setActive] = React.useState(false)
+
+  const handleActive = () => {
+    setActive(prev => !prev)
+  }
+
   const {
     formState,
     reset,
@@ -34,54 +62,93 @@ const Tables = () => {
         company: data.company
       })
     })
+    .then(res => {
+      if (res.statusText === 'OK') {
+        setTimeout(() => { reset() }, 2000)
+      }
+    })
   }
 
-  fetch('http://45.156.119.155:3002/contacts/search', {
-    method: 'POST',
-    headers: {
-      'caller-version-code': '1',
-      'sessionToken': 'user-1',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
+  useEffect(() => {
+    fetch('http://45.156.119.155:3002/contacts/search', {
+      method: 'POST',
+      headers: {
+        'caller-version-code': '1',
+        'sessionToken': 'user-1',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
 
+      })
+      })
+    .then(response => response.json())
+    .then(json => {
+      setData(json.result)
     })
-  })
-  .then(response => response.json())
-  .then(json => console.log(json))
+  }, [id])
+
+  const handleChange = e => {
+    let value = e.target.value.toLowerCase()
+    const newData = data.filter( ({ name }) => {
+      return name.toLowerCase().includes(value)
+    })
+    setData(newData)
+    value === '' ? window.location.reload() : setData(newData)
+  }
 
   return (
     <>
       <Header />
       <header className={cls.header}>
-        <h1 className={cls.headTitle}>Contacts</h1>
+        <h1 className={cls.headTitle}>Контакты</h1>
         <main className={cls.main}>
           <div className={`${cls.contacts} ${cls.div}`}>
             <section className={cls.section}>
               <label className={cls.label}> 
-                Upload
+                Загрузить
                 <input type="file" className={cls.file} />
               </label>
               <div className={cls.searchBox}>
-                <input type="search" className={cls.search} placeholder="Search..." />
-                  <IoIosSearch className={cls.icon} />
+
+                <input 
+                  type="search" 
+                  className={cls.search} 
+                  placeholder="Поиск контактов..." 
+                  onChange={handleChange}
+                />
+                <IoIosSearch className={cls.icon} />
               </div>
             </section>
             <section className={cls.headTitles}>
-              <p className={cls.headTitles_text}>Name</p>
+              <p className={cls.headTitles_text}>Имя</p>
               <p className={cls.headTitles_text}>Email</p>
-              <p className={cls.headTitles_text}>Phone</p>
-              <p className={cls.headTitles_text}>Company</p>
+              <p className={cls.headTitles_text}>Номер</p>
+              <p className={cls.headTitles_text}>Компания</p>
               <p className={cls.headTitles_text}>Linkedin</p>
-              <p className={cls.headTitles_text}>Sequence</p>
-              <p className={cls.headTitles_text}>Active</p>
+              <p className={cls.headTitles_text}>Последовательность</p>
+              <p className={cls.headTitles_text}>Активный</p>
             </section>
             <section className={cls.contactInner}>
-              
+              {
+                
+                  data.map(item => (
+                    <div key={item.id} className={`${cls.contact} ${active && cls.active}`}>
+                      <input type="checkbox" className={cls.checkbox} onClick={handleActive} />
+                      <p className={cls.contactInfo}> { item.name } </p>
+                      <p className={cls.contactInfo}> { item.email } </p>
+                      <p className={cls.contactInfo}> { item.phone } </p>
+                      <p className={cls.contactInfo}> { item.company } </p>
+                      <p className={cls.contactInfo}> { item.linkedin } </p>
+                      <p className={cls.contactInfo}> { } </p>
+                      <p className={cls.contactInfo}> { } </p>
+                    </div>
+                  ))
+                
+              }
             </section>
           </div>
           <form onSubmit={handleSubmit(onSubmit)} className={`${cls.addInputs} ${cls.div}`}>
-            <h1 className={cls.headTitle}>Add your contact</h1>
+            <h1 className={cls.headTitle}>Добавить контакт</h1>
 
             {
               formState.errors.name && <span className={cls.errors}> {formState.errors.name.message} </span>
@@ -90,7 +157,7 @@ const Tables = () => {
             <input 
               className={cls.input} 
               type="text" 
-              placeholder="Your name..." 
+              placeholder="Введите имя..." 
               {...register('name', Form.Options.allInputs)}
             />
 
@@ -101,7 +168,7 @@ const Tables = () => {
             <input 
               className={cls.input} 
               type="email" 
-              placeholder="Your email..." 
+              placeholder="Введите email..." 
               {...register('email', Form.Options.email)}
             />
 
@@ -112,7 +179,7 @@ const Tables = () => {
             <input 
               className={cls.input} 
               type="text" 
-              placeholder="Your number..." 
+              placeholder="Номер телефона..." 
               {...register('number', Form.Options.allInputs)}
             />
 
@@ -123,7 +190,7 @@ const Tables = () => {
             <input 
               className={cls.input} 
               type="text" 
-              placeholder="Your linkedin" 
+              placeholder="Название linkedin..." 
               {...register('linkedin', Form.Options.allInputs)}
             />
 
@@ -134,22 +201,11 @@ const Tables = () => {
             <input 
               className={cls.input} 
               type="text" 
-              placeholder="Your company name..." 
+              placeholder="Название вашей компании..." 
               {...register('company', Form.Options.allInputs)}
             />
 
-            {
-              formState.errors.sequence && <span className={cls.errors}> {formState.errors.sequence.message} </span>
-            }
-
-            <input 
-              className={cls.input} 
-              type="text" 
-              placeholder="Your sequence..." 
-              {...register('sequence', Form.Options.allInputs)}
-            />
-
-            <button className={cls.button} type="submit">Add to list</button>
+            <button className={cls.button} type="submit">Добавить</button>
           </form>
         </main>
       </header>
