@@ -171,7 +171,7 @@ const Tables = () => {
               {
                 
                   data.map(item => (
-                    <NavLink to={'setActive'}
+                    <div to={'setActive'}
                       key={item.id} 
                       data-id={item.id}
                       className={`${cls.contact} ${idNum !== null && cls.active}`}
@@ -192,7 +192,7 @@ const Tables = () => {
                       <p className={cls.contactInfo}> { item.linkedin } </p>
                       <p className={cls.contactInfo}> { } </p>
                       <p className={cls.contactInfo}> { } </p>
-                    </NavLink>
+                    </div>
                   ))
                 
               }
