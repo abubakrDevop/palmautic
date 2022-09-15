@@ -1,6 +1,7 @@
 import cls from '../../assets/scss/react/_customTables.module.scss'
 import { IoIosSearch } from 'react-icons/io'
 import { useForm } from "react-hook-form";
+import { NavLink } from "react-router-dom"
 import { Form } from "../../helpers/form"
 import React, { useEffect } from "react";
 // import { postContact, searchGet } from '../../helpers/form/restApi'
@@ -170,7 +171,7 @@ const Tables = () => {
               {
                 
                   data.map(item => (
-                    <div 
+                    <NavLink to={'setActive'}
                       key={item.id} 
                       data-id={item.id}
                       className={`${cls.contact} ${idNum !== null && cls.active}`}
@@ -191,7 +192,7 @@ const Tables = () => {
                       <p className={cls.contactInfo}> { item.linkedin } </p>
                       <p className={cls.contactInfo}> { } </p>
                       <p className={cls.contactInfo}> { } </p>
-                    </div>
+                    </NavLink>
                   ))
                 
               }
