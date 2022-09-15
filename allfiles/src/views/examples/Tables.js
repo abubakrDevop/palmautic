@@ -65,6 +65,7 @@ const Tables = () => {
     .then(res => {
       if (res.statusText === 'OK') {
         setTimeout(() => { reset() }, 2000)
+        window.location.reload()
       }
     })
   }
