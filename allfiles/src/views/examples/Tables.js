@@ -28,6 +28,7 @@ const Tables = () => {
     },
   ])
   const [active, setActive] = React.useState(false)
+  const [idNum, setId] = React.useState(null)
 
   const handleActive = () => {
     setActive(prev => !prev)
@@ -35,7 +36,6 @@ const Tables = () => {
 
   const {
     formState,
-    reset,
     register,
     handleSubmit
   } = useForm()
@@ -54,7 +54,6 @@ const Tables = () => {
       },
       body: JSON.stringify({
         id: id,
-        accountId: id,
         phone: data.number,
         email: data.email,
         name: data.name,
@@ -64,11 +63,36 @@ const Tables = () => {
     })
     .then(res => {
       if (res.statusText === 'OK') {
-        setTimeout(() => { reset() }, 2000)
         window.location.reload()
       }
     })
+    .then(change => {})
+    
+    fetch('http://45.156.119.155:3002/contacts/createOrUpdate', {
+      method: 'POST',
+      headers: {
+        'caller-version-code': '1',
+        'sessionToken': 'user-1',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id: idNum,
+        phone: data.number,
+        email: data.email,
+        name: data.name,
+        linkedin: data.linkedin,
+        company: data.company
+      })
+    })
+    .then(res => {
+      if (res.statusText === 'OK') {
+        window.location.reload()
+      }
+    })
+    .then(change => {})
   }
+
+  console.log(data)
 
   useEffect(() => {
     fetch('http://45.156.119.155:3002/contacts/search', {
@@ -85,6 +109,8 @@ const Tables = () => {
     .then(response => response.json())
     .then(json => {
       setData(json.result)
+    })
+    .then(seatch => {
     })
   }, [id])
 
@@ -114,7 +140,7 @@ const Tables = () => {
                 <input 
                   type="search" 
                   className={cls.search} 
-                  placeholder="Поиск контактов..." 
+                  placeholder="Поиск..." 
                   onChange={handleChange}
                 />
                 <IoIosSearch className={cls.icon} />
@@ -133,7 +159,12 @@ const Tables = () => {
               {
                 
                   data.map(item => (
-                    <div key={item.id} className={`${cls.contact} ${active && cls.active}`}>
+                    <div 
+                      key={item.id} 
+                      data-id={item.id}
+                      className={`${cls.contact} ${active && cls.active}`}
+                      onClick={() => setId(item.id)}
+                    >
                       <input type="checkbox" className={cls.checkbox} onClick={handleActive} />
                       <p className={cls.contactInfo}> { item.name } </p>
                       <p className={cls.contactInfo}> { item.email } </p>
@@ -149,7 +180,7 @@ const Tables = () => {
             </section>
           </div>
           <form onSubmit={handleSubmit(onSubmit)} className={`${cls.addInputs} ${cls.div}`}>
-            <h1 className={cls.headTitle}>Добавить контакт</h1>
+            <h1 className={cls.headTitle}>{idNum === null ? 'Добавить контакт' : 'Изменить контакт' }</h1>
 
             {
               formState.errors.name && <span className={cls.errors}> {formState.errors.name.message} </span>
