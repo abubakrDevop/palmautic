@@ -1,4 +1,3 @@
-import Header from "components/Headers/Header.js";
 import cls from '../../assets/scss/react/_customTables.module.scss'
 import { IoIosSearch } from 'react-icons/io'
 import { useForm } from "react-hook-form";
@@ -29,6 +28,10 @@ const Tables = () => {
   ])
   const [active, setActive] = React.useState(false)
   const [name, setName] = React.useState('')
+  const [email, setEmail] = React.useState('')
+  const [phone, setPhone] = React.useState('')
+  const [link, setLink] = React.useState('')
+  const [company, setCompany] = React.useState('')
   const [idNum, setId] = React.useState(null)
   const [json, setJson] = React.useState()
 
@@ -174,10 +177,14 @@ const Tables = () => {
                       onClick={() => {
                         setId(item.id)
                         setName(item.name)
+                        setEmail(item.email)
+                        setPhone(item.phone)
+                        setLink(item.linkedin)
+                        setCompany(item.company)
                       }}
                     >
                       <input type="checkbox" className={cls.checkbox} onClick={handleActive} />
-                      <p className={cls.contactInfo} onClick={() => setName(item.name)}> { item.name } </p>
+                      <p className={cls.contactInfo}> { item.name } </p>
                       <p className={cls.contactInfo}> { item.email } </p>
                       <p className={cls.contactInfo}> { item.phone } </p>
                       <p className={cls.contactInfo}> { item.company } </p>
@@ -203,6 +210,7 @@ const Tables = () => {
               className={cls.input} 
               type="text" 
               placeholder="Введите имя..." 
+              defaultValue={idNum === null ? '' : name}
               {...register('name', Form.Options.allInputs)}
             />
 
@@ -214,6 +222,7 @@ const Tables = () => {
               className={cls.input} 
               type="email" 
               placeholder="Введите email..." 
+              defaultValue={idNum === null ? '' : email}
               {...register('email', Form.Options.email)}
             />
 
@@ -225,6 +234,7 @@ const Tables = () => {
               className={cls.input} 
               type="text" 
               placeholder="Номер телефона..." 
+              defaultValue={idNum === null ? '' : phone}
               {...register('number', Form.Options.allInputs)}
             />
 
@@ -236,6 +246,7 @@ const Tables = () => {
               className={cls.input} 
               type="text" 
               placeholder="Название linkedin..." 
+              defaultValue={idNum === null ? '' : link}
               {...register('linkedin', Form.Options.allInputs)}
             />
 
@@ -247,6 +258,7 @@ const Tables = () => {
               className={cls.input} 
               type="text" 
               placeholder="Название вашей компании..." 
+              defaultValue={idNum === null ? '' : company}
               {...register('company', Form.Options.allInputs)}
             />
 
