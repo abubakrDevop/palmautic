@@ -16,7 +16,7 @@ export const allInputs = {
         value: true,
     },
     minLength: {
-        value: 5,
-        message: 'Должен содержать не менее 5 букв!'
+        value: 3,
+        message: 'Должен содержать не менее 3 букв!'
     }
 }

@@ -44,7 +44,8 @@ const Tables = () => {
     formState,
     reset,
     register,
-    handleSubmit
+    handleSubmit,
+    setValue
   } = useForm()
 
   let id = 0
@@ -73,7 +74,6 @@ const Tables = () => {
         window.location.reload()
       }
     })
-    .then(change => {})
     
     fetch('http://45.156.119.155:3002/contacts/createOrUpdate', {
       method: 'POST',
@@ -96,7 +96,6 @@ const Tables = () => {
         window.location.reload()
       }
     })
-    .then(change => {})
   }
 
   console.log(data)
@@ -143,12 +142,7 @@ const Tables = () => {
         <main className={cls.main}>
           <div className={`${cls.contacts} ${cls.div}`}>
             <section className={cls.section}>
-              <label className={cls.label}> 
-                Загрузить
-                <input type="file" className={cls.file} />
-              </label>
               <div className={cls.searchBox}>
-
                 <input 
                   type="search" 
                   className={cls.search} 
@@ -157,6 +151,10 @@ const Tables = () => {
                 />
                 <IoIosSearch className={cls.icon} />
               </div>
+              <label className={cls.label}> 
+                Загрузить
+                <input type="file" className={cls.file} />
+              </label>
             </section>
             <section className={cls.headTitles}>
               <p className={cls.headTitles_text}>Имя</p>
@@ -165,7 +163,6 @@ const Tables = () => {
               <p className={cls.headTitles_text}>Компания</p>
               <p className={cls.headTitles_text}>Linkedin</p>
               <p className={cls.headTitles_text}>Последовательность</p>
-              <p className={cls.headTitles_text}>Активный</p>
             </section>
             <section className={cls.contactInner}>
               {
@@ -198,10 +195,9 @@ const Tables = () => {
               }
             </section>
           </div>
-          <div className={cls.addInputsHead}>
-          <form onSubmit={handleSubmit(onSubmit)} className={`${cls.addInputs} ${cls.div}`}>
-            <h1 className={cls.headTitle}>{idNum === null ? 'Добавить контакт' : 'Изменить контакт' }</h1>
-            <span className={cls.title}>{idNum === null ? null : name}</span>
+          <div className={`${cls.addInputsHead} ${cls.div}`}>
+          <form onSubmit={handleSubmit(onSubmit)} className={`${cls.addInputs}`}>
+            <h1 className={cls.headTitle}>{idNum === null ? `Добавить контакт` : `Изменить контакт "${name}"`}</h1>
 
             {
               formState.errors.name && <span className={cls.errors}> {formState.errors.name.message} </span>
@@ -211,7 +207,7 @@ const Tables = () => {
               className={cls.input} 
               type="text" 
               placeholder="Введите имя..." 
-              defaultValue={idNum === null ? '' : name}
+              {...setValue("name", idNum === null ? '' : name)}
               {...register('name', Form.Options.allInputs)}
             />
 
@@ -223,7 +219,7 @@ const Tables = () => {
               className={cls.input} 
               type="email" 
               placeholder="Введите email..." 
-              defaultValue={idNum === null ? '' : email}
+              {...setValue("email", idNum === null ? '' : email)}
               {...register('email', Form.Options.email)}
             />
 
@@ -235,7 +231,7 @@ const Tables = () => {
               className={cls.input} 
               type="text" 
               placeholder="Номер телефона..." 
-              defaultValue={idNum === null ? '' : phone}
+              {...setValue("number", idNum === null ? '' : phone)}
               {...register('number', Form.Options.allInputs)}
             />
 
@@ -247,7 +243,7 @@ const Tables = () => {
               className={cls.input} 
               type="text" 
               placeholder="Название linkedin..." 
-              defaultValue={idNum === null ? '' : link}
+              {...setValue("linkedin", idNum === null ? '' : link)}
               {...register('linkedin', Form.Options.allInputs)}
             />
 
@@ -259,12 +255,37 @@ const Tables = () => {
               className={cls.input} 
               type="text" 
               placeholder="Название вашей компании..." 
-              defaultValue={idNum === null ? '' : company}
+              {...setValue("company", idNum === null ? '' : company)}
               {...register('company', Form.Options.allInputs)}
             />
 
             <button className={cls.button} type="submit">{idNum === null ? 'Добавить' : 'Сохранить'}</button>
-            <span onClick={handleClean} className={cls.button_clean} >{idNum === null ? 'Очистить' : 'Отменить изменение'}</span>
+            <div className={cls.buttons}>
+              {idNum !== null ? <span onClick={handleClean} className={cls.button_clean} >Отмена</span> : null}
+              {idNum !== null ? <span className={`${cls.button_clean}`} onClick={() => {
+              fetch('http://45.156.119.155:3002/contacts/delete', {
+                method: 'POST',
+                headers: {
+                  'caller-version-code': '1',
+                  'sessionToken': 'user-1',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  id: idNum !== null ? idNum : id,
+                  phone: data.number,
+                  email: data.email,
+                  name: data.name,
+                  linkedin: data.linkedin,
+                  company: data.company
+                })
+                })
+                .then(res => {
+                  if (res.statusText === 'OK') {
+                    window.location.reload()
+                  }
+                })
+              }}>Удалить</span> : null}
+            </div>
           </form>
           </div>
         </main>
